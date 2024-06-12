@@ -1,17 +1,16 @@
-// Get the text area element
-var editor = document.getElementById("editor");
-
-// Function to save text to localStorage
-function saveText() {
-  localStorage.setItem("text", editor.value);
-}
-
-// Function to load text from localStorage
-function loadText() {
-  var savedText = localStorage.getItem("text");
-  if (savedText) {
-    editor.value = savedText;
+function translateText() {
+    const sourceText = document.getElementById('source-text').value;
+    const targetLanguage = document.getElementById('target-language').value;
+  
+    fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLanguage}&dt=t&q=${encodeURI(sourceText)}`)
+      .then(response => response.json())
+      .then(data => {
+        const translatedText = data[0][0][0];
+        document.getElementById('translated-text').innerText = translatedText;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }
-}
-loadText();
-editor.addEventListener("input", saveText);
+  
+  // Here i have used google Api translator link
